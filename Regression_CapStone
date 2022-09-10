@@ -1,0 +1,292 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "JhqPYLNyv4kb"
+   },
+   "source": [
+    "# Concrete Compressive Strength.\n",
+    "\n",
+    "Compressive strength or compression strength is the capacity of a material or structure to withstand loads tending to reduce size, as opposed to tensile strength, which withstands loads tending to elongate.\n",
+    "\n",
+    "Compressive strength is one of the most important engineering properties of concrete. It is a standard industrial practice that the concrete is classified based on grades. This grade is nothing but the Compressive Strength of the concrete cube or cylinder. Cube or Cylinder samples are usually tested under a compression testing machine to obtain the compressive strength of concrete. The test requisites differ country to country based on the design code."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "juJMyh4vWXUj"
+   },
+   "source": [
+    "Here is your Required [Data ](https://drive.google.com/file/d/1Csmy8fz4BDM70wD07XJYKPqOr8BAPfzE/view?usp=sharing)\n",
+    "# **Good Luck**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "id": "c977lpgIv1BL"
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd \n",
+    "import matplotlib.pyplot as plt \n",
+    "import seaborn as sns; sns.set()\n",
+    "import sklearn\n",
+    "import xlrd\n",
+    "\n",
+    "# Pre Processing\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "from sklearn.preprocessing import MinMaxScaler\n",
+    "\n",
+    "# Error Metrics \n",
+    "from sklearn.metrics import mean_absolute_error\n",
+    "from sklearn.metrics import mean_squared_error\n",
+    "from sklearn.metrics import r2_score\n",
+    "\n",
+    "# Regressors\n",
+    "from sklearn.linear_model import LinearRegression"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "id": "joYvwcElfaaJ"
+   },
+   "outputs": [
+    {
+     "ename": "FileNotFoundError",
+     "evalue": "[Errno 2] No such file or directory: '/content/Concrete_Data (4).xlsx'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[1;31mFileNotFoundError\u001b[0m                         Traceback (most recent call last)",
+      "\u001b[1;32m<ipython-input-2-f1b040851aae>\u001b[0m in \u001b[0;36m<module>\u001b[1;34m()\u001b[0m\n\u001b[1;32m----> 1\u001b[1;33m \u001b[0mdf\u001b[0m\u001b[1;33m=\u001b[0m\u001b[0mpd\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mread_excel\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;34m\"/content/Concrete_Data (4).xlsx\"\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[1;32m~\\Anaconda3\\lib\\site-packages\\pandas\\util\\_decorators.py\u001b[0m in \u001b[0;36mwrapper\u001b[1;34m(*args, **kwargs)\u001b[0m\n\u001b[0;32m    176\u001b[0m                 \u001b[1;32melse\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    177\u001b[0m                     \u001b[0mkwargs\u001b[0m\u001b[1;33m[\u001b[0m\u001b[0mnew_arg_name\u001b[0m\u001b[1;33m]\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mnew_arg_value\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m--> 178\u001b[1;33m             \u001b[1;32mreturn\u001b[0m \u001b[0mfunc\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;33m*\u001b[0m\u001b[0margs\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;33m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m    179\u001b[0m         \u001b[1;32mreturn\u001b[0m \u001b[0mwrapper\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    180\u001b[0m     \u001b[1;32mreturn\u001b[0m \u001b[0m_deprecate_kwarg\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n",
+      "\u001b[1;32m~\\Anaconda3\\lib\\site-packages\\pandas\\util\\_decorators.py\u001b[0m in \u001b[0;36mwrapper\u001b[1;34m(*args, **kwargs)\u001b[0m\n\u001b[0;32m    176\u001b[0m                 \u001b[1;32melse\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    177\u001b[0m                     \u001b[0mkwargs\u001b[0m\u001b[1;33m[\u001b[0m\u001b[0mnew_arg_name\u001b[0m\u001b[1;33m]\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mnew_arg_value\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m--> 178\u001b[1;33m             \u001b[1;32mreturn\u001b[0m \u001b[0mfunc\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;33m*\u001b[0m\u001b[0margs\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;33m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m    179\u001b[0m         \u001b[1;32mreturn\u001b[0m \u001b[0mwrapper\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    180\u001b[0m     \u001b[1;32mreturn\u001b[0m \u001b[0m_deprecate_kwarg\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n",
+      "\u001b[1;32m~\\Anaconda3\\lib\\site-packages\\pandas\\io\\excel.py\u001b[0m in \u001b[0;36mread_excel\u001b[1;34m(io, sheet_name, header, names, index_col, usecols, squeeze, dtype, engine, converters, true_values, false_values, skiprows, nrows, na_values, parse_dates, date_parser, thousands, comment, skipfooter, convert_float, **kwds)\u001b[0m\n\u001b[0;32m    305\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    306\u001b[0m     \u001b[1;32mif\u001b[0m \u001b[1;32mnot\u001b[0m \u001b[0misinstance\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mio\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mExcelFile\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m--> 307\u001b[1;33m         \u001b[0mio\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mExcelFile\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mio\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mengine\u001b[0m\u001b[1;33m=\u001b[0m\u001b[0mengine\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m    308\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    309\u001b[0m     return io.parse(\n",
+      "\u001b[1;32m~\\Anaconda3\\lib\\site-packages\\pandas\\io\\excel.py\u001b[0m in \u001b[0;36m__init__\u001b[1;34m(self, io, **kwds)\u001b[0m\n\u001b[0;32m    392\u001b[0m             \u001b[0mself\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mbook\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mxlrd\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mopen_workbook\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mfile_contents\u001b[0m\u001b[1;33m=\u001b[0m\u001b[0mdata\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    393\u001b[0m         \u001b[1;32melif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mself\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0m_io\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mcompat\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mstring_types\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m--> 394\u001b[1;33m             \u001b[0mself\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mbook\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mxlrd\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mopen_workbook\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mself\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0m_io\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m    395\u001b[0m         \u001b[1;32melse\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    396\u001b[0m             raise ValueError('Must explicitly set engine if not passing in'\n",
+      "\u001b[1;32m~\\Anaconda3\\lib\\site-packages\\xlrd\\__init__.py\u001b[0m in \u001b[0;36mopen_workbook\u001b[1;34m(filename, logfile, verbosity, use_mmap, file_contents, encoding_override, formatting_info, on_demand, ragged_rows)\u001b[0m\n\u001b[0;32m    114\u001b[0m         \u001b[0mpeek\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mfile_contents\u001b[0m\u001b[1;33m[\u001b[0m\u001b[1;33m:\u001b[0m\u001b[0mpeeksz\u001b[0m\u001b[1;33m]\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    115\u001b[0m     \u001b[1;32melse\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m--> 116\u001b[1;33m         \u001b[1;32mwith\u001b[0m \u001b[0mopen\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mfilename\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;34m\"rb\"\u001b[0m\u001b[1;33m)\u001b[0m \u001b[1;32mas\u001b[0m \u001b[0mf\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m    117\u001b[0m             \u001b[0mpeek\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mf\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mread\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mpeeksz\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m    118\u001b[0m     \u001b[1;32mif\u001b[0m \u001b[0mpeek\u001b[0m \u001b[1;33m==\u001b[0m \u001b[1;34mb\"PK\\x03\\x04\"\u001b[0m\u001b[1;33m:\u001b[0m \u001b[1;31m# a ZIP file\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n",
+      "\u001b[1;31mFileNotFoundError\u001b[0m: [Errno 2] No such file or directory: '/content/Concrete_Data (4).xlsx'"
+     ]
+    }
+   ],
+   "source": [
+    "df=pd.read_excel(\"/content/Concrete_Data (4).xlsx\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "o8kgyuikgVk6",
+    "outputId": "97aabb4d-e5a1-49aa-91cb-8a9206622b3c"
+   },
+   "outputs": [],
+   "source": [
+    "df.head()\n",
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "M8SgQDuMgXZ0",
+    "outputId": "14981e6c-dec5-4c7e-c51d-5d75920040b4"
+   },
+   "outputs": [],
+   "source": [
+    "y=df['Concrete compressive strength(MPa, megapascals) ']\n",
+    "X=df.drop(['Concrete compressive strength(MPa, megapascals) '],1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "id": "1nBagkHzgu82"
+   },
+   "outputs": [],
+   "source": [
+    "X_train,X_test,y_train,y_test =train_test_split(X,y , test_size=0.25, random_state=42)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "nfYdLsLThLVq",
+    "outputId": "f2b3eb29-d940-425e-bc13-f35d1993d8d0"
+   },
+   "outputs": [],
+   "source": [
+    "scaler = StandardScaler()\n",
+    "scaler.fit(X_train)\n",
+    "X_train=scaler.transform(X_train)\n",
+    "X_test=scaler.transform(X_test)\n",
+    "\n",
+    "np.std(X_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "vf45rAirhU31",
+    "outputId": "b6af51d0-8be6-4748-a5de-f3027b2b669f"
+   },
+   "outputs": [],
+   "source": [
+    "lr= LinearRegression()\n",
+    "lr.fit(X_train,y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "GXvSXme8hZMA",
+    "outputId": "415886a3-53d2-4342-d80e-e30a3c488012"
+   },
+   "outputs": [],
+   "source": [
+    "y_predict=lr.predict(X_test)\n",
+    "y_predict"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "sn_qGcohhdpn",
+    "outputId": "f0153e12-9019-4d02-9ba5-2a683e34c012"
+   },
+   "outputs": [],
+   "source": [
+    "mean_squared_error(y_predict,y_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "Y3ErMcqMhi1U",
+    "outputId": "5a06e478-de10-43e2-afcf-30109f53f12f"
+   },
+   "outputs": [],
+   "source": [
+    "r2_score(y_test,y_predict)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "PxhuwRNShpSW",
+    "outputId": "bb87b0be-e840-4367-b292-a5d6292c42c6"
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import PolynomialFeatures \n",
+    "ploy=PolynomialFeatures(degree=3)\n",
+    "X_poly=ploy.fit_transform(X_train)\n",
+    "\n",
+    "lr2=LinearRegression()\n",
+    "lr2.fit(X_poly,y_train)\n",
+    "X_poly=ploy.transform(X_test)\n",
+    "y_predict=lr2.predict(X_poly)\n",
+    "from sklearn.metrics import r2_score\n",
+    "Er1=r2_score(y_test,y_predict)\n",
+    "print(Er1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "5K-loe6ljbmR",
+    "outputId": "863339ca-e1a6-4312-b33c-294dedfdc544"
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import PolynomialFeatures \n",
+    "ploy=PolynomialFeatures(degree=3)\n",
+    "X_poly=ploy.fit_transform(X_train)\n",
+    "\n",
+    "lr2=LinearRegression()\n",
+    "lr2.fit(X_poly,y_train)\n",
+    "X_poly=ploy.transform(X_train)\n",
+    "y_predict=lr2.predict(X_poly)\n",
+    "from sklearn.metrics import r2_score\n",
+    "Er1=r2_score(y_train,y_predict)\n",
+    "print(Er1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "id": "CXxF8amSj5oP"
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "colab": {
+   "provenance": []
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}
